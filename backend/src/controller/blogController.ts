@@ -27,7 +27,7 @@ export const getSpecificBlog = async(req: Request, res: Response) => {
 }
 
 export const postBlog = async(req: Request, res: Response) => {
-    
+
 }
 
 const presignedUpload = async(req: Request, res: Response) => {
@@ -53,13 +53,13 @@ const generatePreSignedUrl = async(fileName: string, fileType: string, userId: s
     const key = `uploads/${userId}/${Date.now()}-${crypto.randomUUID()}.${extension}`
 
     const command = new PutObjectCommand({
-        Bucket: process.env.R2_BUCKET_NAME!,
+        Bucket: process.env.BUCKET_NAME!,
         Key: key,
         ContentType: fileType
     })
 
     const signedUrl = await getSignedUrl(r2, command, {expiresIn: 300})
 
-    const publicUrl = process.env.R2_PUBLIC_URL ? `${process.env.R2_PUBLIC_URL.replace(/\/$/,'')}/${key}` : null
+    const publicUrl = process.env.PUBLIC_URL ? `${process.env.PUBLIC_URL.replace(/\/$/,'')}/${key}` : null
     return {signedUrl, key, publicUrl}
 }
